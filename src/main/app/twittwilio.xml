@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:twilio="http://www.mulesoft.org/schema/mule/twilio" xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/twitter http://www.mulesoft.org/schema/mule/twitter/current/mule-twitter.xsd
+http://www.mulesoft.org/schema/mule/twilio http://www.mulesoft.org/schema/mule/twilio/current/mule-twilio.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd">
+
+
+
+<http:listener-config name="HTTP_Listener_Configuration"
+		host="localhost" port="8086" doc:name="HTTP Listener Configuration" />
+	<http:connector name="connector.http.mule.default" doc:name="HTTP-HTTPS" />
+	
+	<twitter:config name="Twitter1"	accessKey="71559855-SzO0eRKGa3PMokxUTGnkUNTUjZVHfe70u2uwyTmsO"
+		accessSecret="WGqZG5pY7PKVr4lKNJkwUaeau11WWKl7dCuIK8m6xMVoL"
+		consumerKey="bzg1b9KfE53gyz9Dp2Pg4LeES" consumerSecret="UA90VAd1td41rv82Eeau8689fVeGcMhs1ZBtz79qM4vdCfJeIu"
+		doc:name="Twitter1" />
+		
+   <twilio:config accountSid="AC52400d4469d4cb1351cd63c0b8c80556"
+		authToken="b54e12d68397f5cd85eac62eed7e1052" name="Twilio1" doc:name="Twilio">
+		<twilio:http-callback-config domain="localhost"
+			localPort="8086" remotePort="8086" path="msg" connector-ref="connector.http.mule.default" />
+	</twilio:config>
+	
+	 <catch-exception-strategy name="extractCauseMessageExceptionStrategy"
+        doc:name="Catch Exception Strategy">
+        <set-payload value="#[exception.cause.message]" doc:name="Set Payload" />
+       <json:object-to-json-transformer doc:name="Object to JSON" />
+       <!-- <json:json-to-xml-transformer doc:name="JSON to XML"/> -->      
+    </catch-exception-strategy>
+	
+    <flow name="twittwilioFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="gettweets" doc:name="HTTP"/>        
+        
+        <twitter:get-user-timeline-by-screen-name config-ref="Twitter1" doc:name="TwitterPost" 
+        screenName="#[message.inboundProperties.'http.query.params'.sname]"/>
+        
+        <foreach doc:name="For Each">
+			<logger message="#[payload.text]" level="INFO" doc:name="Logger" />
+		</foreach>
+		
+		<set-payload value="RT @#[message.payload[0].user.screenName]: #[message.payload[0].text] - Tweet from my twittwillo app :)"
+			doc:name="Set Payload" />
+        
+        <twilio:send-sms-message config-ref="Twilio1" body="#[payload]" from="+1415-599-2671" to="#[message.inboundProperties.'http.query.params'.phone]" doc:name="Twiliosms" />
+			 
+             <exception-strategy ref="extractCauseMessageExceptionStrategy"
+            doc:name="Extract Cause Message Exception Strategy" />
+		
+    </flow>
+    <flow name="twittwilioFlow1">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>  
+        <http:static-resource-handler resourceBase="src/main/app/views" defaultFile="Home.html" doc:name="HTTP Static Resource Handler"/>
+    </flow>
+    
+    <flow name="twittwilioFlow2">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="getlatest" doc:name="HTTP"/>
+        <twitter:get-user-timeline-by-screen-name config-ref="Twitter1" doc:name="GetLatestTweet" 
+        screenName="#[message.inboundProperties.'http.query.params'.sname]" count="1"/>        
+        <mulexml:object-to-xml-transformer doc:name="Object to XML"/>       
+    </flow>
+    
+    <flow name="twittwilioFlow3">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="getRegNumbers" doc:name="HTTP"/>
+        <twilio:get-available-toll-free-numbers config-ref="Twilio1" isoCountryCode="US" doc:name="TwilioGetAvailablePhoneNumbers"/>
+    </flow>
+    
+</mule>

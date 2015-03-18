@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Home- Twittwilio</title>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+// To text/send the latest tweet of the given twitter screen name to the registerd twilio number. 
+$(document).ready(function(){
+    $("#tweet").click(function(){    	
+    	var input = $("#twitterscreenname");
+ 	 	var mobNum = $("#recipientmobilenumber");
+ 	 	   if(($.trim(input.val()).length == 0) || ($.trim(input.val())=="")){
+ 			   alert("Screen Name cannot be null !");
+ 			   input.focus(); 			 
+ 		   } else if(($.trim(mobNum.val()).length == 0) || ($.trim(mobNum.val())=="")){
+ 			  alert("Recipient Mobile number cannot be null !");
+ 			 mobNum.focus();			 
+ 		   }else{
+ 			  $.post("http://localhost:8086/gettweets?sname="+input.val()+"&phone="+mobNum.val(),        
+ 				function(data){
+ 				 if(data.indexOf("<RestException>")!=-1){
+ 					$("#statusspanlabel").html("");
+	 				 $("#statusspanbody").html("");  				
+	 				 var errorMsg = data.substr(data.indexOf("<Message>"),data.indexOf("</Message>"));
+ 					$("#errorspanlabel").html("<h4 class='bg-danger'> Error :</h4>");
+ 					$("#errorspanbody").html("<blockquote>"+errorMsg+"</blockquote>");
+ 				 }else{	
+ 					$("#errorspanlabel").html("");	
+ 					$("#errorspanbody").html("");
+	 				 xmlDoc = $.parseXML(data);
+	 				 $xml = $(xmlDoc);
+	 				 $body = $xml.find("Body"); 
+	 				 $("#statusspanlabel").html("<h3> The tweet sent :</h3>");
+	 				 $("#statusspanbody").html($body.text());   
+ 				 }	
+ 			 }); 			  
+ 		   }
+    });
+});
+//To get the latest tweet for the given twitter screen name
+$(document).ready(function(){
+	    $("#getlatesttweet").click(function(){    	
+	    	var input = $("#twitterscreenname");	 	 	
+	 	 	   if(($.trim(input.val()).length == 0) || ($.trim(input.val())=="")){
+	 			   alert("Screen Name cannot be null !");
+	 			   input.focus(); 			 
+	 		   }else{
+	 			  $.post("http://localhost:8086/getlatest?sname="+input.val(),        
+	 				function(data){
+	 				 $("#errorspanlabel").html("");	
+	 				 $("#errorspanbody").html("");
+	 				 $("#statusspanlabel").html("");
+		 			 $("#statusspanbody").html("");  
+	 				 xmlDoc = $.parseXML(data);	 				 
+	 				 $xml = $(xmlDoc);
+	 				 $text = $xml.find("text"); 
+	 				 $("#latestspanlabel").html("<h3> Latest tweet :</h3>");
+	 				 $("#latestbody").html($text.text());
+	 			}); 			  
+	 		  }
+	   });
+});
+// To fetch the available Toll free numbers.
+$(document).ready(function(){
+    $("#regCallers").click(function(){     	
+ 			  $.post("http://localhost:8086/getRegNumbers",        
+ 				function(data){
+ 				 $("#errorspanlabel").html("");	
+ 				 $("#errorspanbody").html("");
+ 				 $("#statusspanlabel").html("");
+	 			 $("#statusspanbody").html("");
+	 			 $("#availablespanlabel").html("");
+	 			 $("#availablespanbody").html("");
+ 				 xmlDoc = $.parseXML(data);
+ 				 xml = $(xmlDoc);
+ 				 $("#availablespanlabel").html("<h4> Available Toll Free Numbers :</h4>");
+ 				 var swiRow = true;
+ 				 $(xml).find("PhoneNumber").each(function(){
+ 					 if(swiRow == true){
+ 						$("#availablespanbody").append("<div class='col-sm-4' style='background-color:lavender;'>"+$(this).text()+"&nbsp;</div> ");
+ 						swiRow = false;
+ 					 }else{
+ 						$("#availablespanbody").append("<div class='col-sm-4' style='background-color:lavenderblush;'>"+$(this).text()+"&nbsp;</div> ");
+ 						swiRow = true;
+ 					 } 				   
+ 				  });				 
+ 				 
+ 			}); 		  
+   });
+});
+ 
+</script>
+  <div class="container">
+  <div class="panel panel-default">
+   <div class="panel-heading">
+   <div class="row">	
+   <div class="col-md-3">
+     <img src="twittwiliologo.png" alt="Twittwilio" style="width:100px;height:100px">
+   </div>
+   <div class="col-md-9">
+    <h2 class="panel-title"><h2>Text the latest Tweet </h2></h2>
+    </div>
+    </div>
+  </div>
+  <div class="panel-body">    
+     <div class="form-group">  
+     <div class="row">	
+     <div class="col-xs-9">     
+	    <label for="twitter-screen-name" class="label label-info" >Twitter ScreenName :</label>
+	    <input type="text" class="form-control" id="twitterscreenname"> 
+	    </div>	
+	    </div>    
+	  </div>
+	  <div class="form-group">	
+	  <div class="row">	
+	    <div class="col-xs-4">			    
+		    <button type="button" class="btn btn-primary" id="getlatesttweet" >Get latest tweet</button>
+	    </div>
+	  </div>  	
+	 </div>
+	 <div class="form-group">	 
+	    <div class="row">
+	    <div class="col-xs-4">	
+	    <span id="latestspanlabel"></span>
+	    <span id="latestbody"></span>
+	    </div>
+	 </div>	  
+    </div>
+    <div class="form-group">	
+	  <div class="row">	
+	    <div class="col-xs-4">	 
+		    <!-- <button type="button" class="btn btn-primary" name="tweet" onclick="textTheTweet()">Text the tweet</button> -->
+		    <button type="button" class="btn btn-warning" id="regCallers" >List of Available numbers</button>
+	    </div>
+	  </div>  	
+	 </div>
+	 <div class="form-group">	 
+	    <div class="row">
+	    <div class="col-xs-12">	
+	    <span id="availablespanlabel"></span>
+	    <div class="container-fluid"></div>
+	    <div id="availablespanbody" class="row"></div>
+	    </div>	
+	  </div> 
+	  </div> 
+	  <div class="form-group">
+	    <div class="row">		    	  
+	    <div class="col-xs-3">
+	     <label for="recipient-mobile-number" class="label label-info"> * Recipient Mobile number :</label>
+	     <input type="text" class="form-control" id="recipientmobilenumber">
+	    </div>	
+	    </div>
+	    <div class="row">		    	  
+	    <div class="col-xs-3">
+	     <p for="recipient-mobile-number" class="small bg-info"> * Must be a registered Twilio Phone number.</p>	     
+	    </div>	
+	    </div>    
+	  </div>
+	  <div class="form-group">	
+	  <div class="row">	
+	    <div class="col-xs-4">	 
+		    <!-- <button type="button" class="btn btn-primary" name="tweet" onclick="textTheTweet()">Text the tweet</button> -->
+		    <button type="button" class="btn btn-success" id="tweet" >Text the latest tweet</button>
+	    </div>
+	  </div>  	
+	 </div>
+	 <!-- Status Div -->
+	 <div class="form-group" id="statusGrp">	 
+	    <div class="row">
+	    <div class="col-xs-4">	
+	    <span id="statusspanlabel"></span>
+	    <span id="statusspanbody"></span>
+	    </div>	
+	  </div>  
+	  </div>
+	  <!-- Error Div -->
+	  <div class="form-group" id="errorGrp">	 
+	    <div class="row">
+	    <div class="col-xs-12">	
+	    <span id="errorspanlabel"></span>
+	    <span id="errorspanbody"></span>
+	    </div>	
+	  </div>  
+	  </div>
+  </div>
+  <div class="panel-footer"><h6>Copyrights &copy; Dilip Santhanam</h6></div>
+</div>
+	  	 
+	 
+  </div>
+  
+</body>
+</html>

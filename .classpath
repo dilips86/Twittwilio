@@ -1,0 +1,50 @@
+<classpath>
+  <classpathentry kind="src" path="mappings" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/api" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/app" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes"/>
+  <classpathentry kind="src" path="src/test/resources" output="target/test-classes" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="MULE_RUNTIME"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1-osgi/activation-1.1-osgi.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.4/commons-io-1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/C:/Users/c08001/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/apache/ftpserver/ftplet-api/1.0.6/ftplet-api-1.0.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/ftpserver/ftpserver-core/1.0.6/ftpserver-core-1.0.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar" sourcepath="M2_REPO/javax/inject/javax.inject/1/javax.inject-1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/C:/Users/c08001/.m2/repository/javax/inject/javax.inject/1/javax.inject-1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/joda-time/joda-time/1.6/joda-time-1.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/jcraft/jsch/0.1.42/jsch-0.1.42.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/safehaus/jug/jug/2.0.0/jug-2.0.0-asl.jar"/>
+  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.16/log4j-1.2.16.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/mina/mina-core/2.0.4/mina-core-2.0.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mockito/mockito-core/1.9.5/mockito-core-1.9.5.jar" sourcepath="M2_REPO/org/mockito/mockito-core/1.9.5/mockito-core-1.9.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/C:/Users/c08001/.m2/repository/org/mockito/mockito-core/1.9.5/mockito-core-1.9.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/mule/tools/devkit/mule-devkit-annotations/3.3.2/mule-devkit-annotations-3.3.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mule/tools/devkit/mule-devkit-shade/3.6.0/mule-devkit-shade-3.6.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mule/modules/mule-module-twilio/1.4/mule-module-twilio-1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mule/modules/mule-module-twitter/4.0.0/mule-module-twitter-4.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mvel/mvel2/2.0.19/mvel2-2.0.19.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/objenesis/objenesis/1.0/objenesis-1.0.jar" sourcepath="M2_REPO/org/objenesis/objenesis/1.0/objenesis-1.0-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/C:/Users/c08001/.m2/repository/org/objenesis/objenesis/1.0/objenesis-1.0-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/sshd/sshd-core/0.6.0/sshd-core-0.6.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
+</classpath>
