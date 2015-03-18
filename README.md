@@ -1,5 +1,5 @@
 # Twittwilio
-Twitilio - My fun mashup of Twitter and Twilio using Mule ESB.
+Twittwilio - My fun mashup of Twitter and Twilio using Mule ESB.
  
 #An Introduction
  
@@ -15,7 +15,7 @@ Now from Twitilio you would be able to send a latest tweet to your friend who is
  
 This mashup also lists some of the toll free numbers to which you would be able to send out tweets as text messages .
  
-If there is an emergency and you need to alert a toll-free number to send out a generic message just share that on twitter and push it via Twitilio.
+If there is an emergency and you need to alert a toll-free number to send out a generic message just share that on twitter and push it via Twittwilio.
  
 #PreRequisite
  
