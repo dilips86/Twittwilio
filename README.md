@@ -24,7 +24,7 @@ A twitter account for the sender and a valid twilio registered user as recipient
 #For Testing Purposes
  
 If you are a twilio user ,you could very well send yourself the latest tweet by giving your phone number.
-(I am a twilio registered user ,so in case you want to try texting me your latest tweet you could just put my phone number in the recipient box.)
+
 
 #Developer's Note
  
